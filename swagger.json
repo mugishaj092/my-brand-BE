@@ -1,0 +1,875 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "My-Brand APIs Documentation",
+    "description": "APIs for the My-Brand Project",
+    "contact": {
+      "name": "ISHIMWE Ami Paradis",
+      "email": "pishimweaime7@gmail.com",
+      "telephone": "+2507919666291"
+    },
+    "license": {
+      "name": "ISC"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8081",
+      "description": "Local Development Server for Swagger"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Endpoints for user registration, login, profile retrieval, and user management."
+    },
+    {
+      "name": "Blogs",
+      "description": "Manage blog posts, including creation, retrieval, update, deletion, comments, likes, and views."
+    },
+    {
+      "name": "messages",
+      "description": "Handle user messages, including creation, retrieval, and deletion."
+    },
+    {
+      "name": "Comments",
+      "description": "Manage comments on blog posts, including addition and retrieval."
+    },
+    {
+      "name": "Likes",
+      "description": "Handle likes on blog posts."
+    },
+    {
+      "name": "Users",
+      "description": "User-related operations, such as retrieving all users, deleting users, and accessing user profiles."
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "MulterFile": {
+        "type": "object",
+        "properties": {
+          "fieldname": { "type": "string" },
+          "originalname": { "type": "string" },
+          "encoding": { "type": "string" },
+          "mimetype": { "type": "string" },
+          "buffer": { "type": "string" },
+          "size": { "type": "integer" }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "basePath": "/api",
+  "schemes": ["http"],
+  "paths": {
+    "/api/users/signup": {
+      "post": {
+        "summary": "Create an account",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "mugishajoseph092@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "walmond@123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "walmond@123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "mugisha"
+                  }
+                },
+                "required": ["email", "password", "name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "email": { "type": "string" },
+                    "password": { "type": "string" },
+                    "confirmPassword": { "type": "string" }
+                  },
+                  "required": ["name", "email", "password", "confirmPassword"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "User Login",
+        "tags": ["Authentication"],
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "mugishajoseph0923@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "walmond@123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "JWT token for authentication"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Authentication type (e.g., Bearer)"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "User's full name"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "User's email address"
+                    },
+                    "role": {
+                      "type": "string",
+                      "description": "User's role or access level"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Get all users for the admin panel",
+        "tags": ["Authentication"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "delete": {
+        "summary": "Delete a certain user by Admin",
+        "tags": ["Authentication"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get user details by ID",
+        "tags": ["Authentication"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a User",
+        "tags": ["Authentication"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "password": { "type": "string" },
+                  "confirmPassword": { "type": "string" },
+                  "email": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "400": {
+      "description": "Bad Request",
+      "content": {
+        "application/json": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string" },
+              "message": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "/api/blog": {
+      "post": {
+        "summary": "Create a blog with valid details",
+        "tags": ["Blogs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "content": { "type": "string" },
+                  "image": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "cover": { "type": "string" },
+                        "content": { "type": "string" },
+                        "user": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Read blogs",
+        "tags": ["Blogs"],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": { "type": "string" },
+                          "imgsrc": { "type": "string" },
+                          "desc": { "type": "string" },
+                          "content": { "type": "string" },
+                          "user": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blog/{id}": {
+      "get": {
+        "summary": "Read a single blog",
+        "tags": ["Blogs"],
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "imgsrc": { "type": "string" },
+                        "desc": { "type": "string" },
+                        "content": { "type": "string" },
+                        "user": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a blog",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "desc": { "type": "string" },
+                  "content": { "type": "string" },
+                  "file": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "title": { "type": "string" },
+                        "imgsrc": { "type": "string" },
+                        "desc": { "type": "string" },
+                        "content": { "type": "string" },
+                        "user": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a blog",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{id}/comment": {
+      "post": {
+        "summary": "Add a comment to a blog",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "example": "Hello"
+                  }
+                },
+                "required": ["comment"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "comment": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Read comments for a blog",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/messages": {
+      "post": {
+        "summary": "Create a user query",
+        "tags": ["messages"],
+        "security": [],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "mugishajoseph092@gmail.com"
+                  },
+                  "phone": {
+                    "type": "number",
+                    "example": "0792418795"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "hi"
+                  },
+                  "firstname": {
+                    "type": "string",
+                    "example": "Walmond"
+                  },
+                  "lastname": {
+                    "type": "string",
+                    "example": "Exter"
+                  }
+                },
+                "required": [
+                  "email",
+                  "message",
+                  "firstname",
+                  "lastname",
+                  "phone"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "description": "Getting all messages from users",
+        "summary": "Read all user messages",
+        "tags": ["messages"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/messages/{id}": {
+      "get": {
+        "summary": "Read a single user query",
+        "tags": ["messages"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user query",
+        "tags": ["messages"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+
+    "/api/blog/{id}/addlike": {
+      "post": {
+        "summary": "Add a like to a blog",
+        "tags": ["Likes"],
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/blog/{id}/unlike": {
+      "post": {
+        "summary": "Remove like from a blog",
+        "tags": ["Likes"],
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  }
+}

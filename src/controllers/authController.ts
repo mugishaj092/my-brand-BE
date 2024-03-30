@@ -5,7 +5,7 @@ import { promisify } from 'util';
 import sendEmail from '../utils/email';
 import crypto from 'crypto';
 
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   user?: any;
 }
 
@@ -39,7 +39,6 @@ exports.signUp = async (req: Request, res: Response): Promise<void> => {
 
 exports.login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password }: any = req.body;
-  console.log(email, password);
 
   if (!email || !password) {
     return res.status(400).json({
@@ -68,7 +67,7 @@ exports.login = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-exports.protect = async (
+export const protect = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction,
@@ -92,7 +91,6 @@ exports.protect = async (
       process.env.JWT_SECRET || '',
     );
     const currentUser = await User.findById(decoded.id);
-    console.log(currentUser);
 
     if (!currentUser) {
       return res.status(401).json({
@@ -110,6 +108,8 @@ exports.protect = async (
     });
   }
 };
+
+export const currentUser=(req: AuthenticatedRequest, res: Response)=>{return req.user}
 
 exports.restrictTo = (roles: string) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -181,7 +181,6 @@ exports.resetPassword = async (req: Request, res: Response) => {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: currentDate },
   });
-  console.log(user, hashedToken);
 
   if (!user) {
     return res.status(400).json({

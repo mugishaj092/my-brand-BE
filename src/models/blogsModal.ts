@@ -1,13 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
+
 export interface BlogModel extends Document {
   title: string;
   cover: string;
   content: string;
   likes: number;
-  dislikes: number;
-  numViews: number;
-  user: mongoose.Types.ObjectId;
+  author: String;
   Comments: String;
   createdAt: Date;
 }
@@ -19,7 +18,6 @@ const blogSchema = new Schema<BlogModel>({
   },
   cover: {
     type: String,
-    required: [true, 'Image source is required'],
   },
   content: {
     type: String,
@@ -29,14 +27,11 @@ const blogSchema = new Schema<BlogModel>({
     type: Number,
     default: 0,
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
+  author: { type: String},
   Comment:{
     type:String
   },
-  Date:{
+  CreateAt:{
     type:Date,
     default: new Date()
   }
