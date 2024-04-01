@@ -4,7 +4,7 @@ import app from './app'
 
 dotenv.config({ path: './config.env' })
 
-interface EnvConfig {
+export interface EnvConfig {
     PORT: string | number
     DATABASE: string
     DATABASE_PASSWORD: string
