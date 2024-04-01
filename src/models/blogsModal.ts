@@ -1,5 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
-
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface BlogModel extends Document {
   title: string;
@@ -14,28 +13,28 @@ export interface BlogModel extends Document {
 const blogSchema = new Schema<BlogModel>({
   title: {
     type: String,
-    required: [true, 'Blog title is required'],
+    required: [true, "Blog title is required"],
   },
   cover: {
     type: String,
   },
   content: {
     type: String,
-    required: [true, 'Blog content is required'],
+    required: [true, "Blog content is required"],
   },
   likes: {
     type: Number,
     default: 0,
   },
-  author: { type: String},
-  Comment:{
-    type:String
+  author: { type: String },
+  Comment: {
+    type: String,
   },
-  CreateAt:{
-    type:Date,
-    default: new Date()
-  }
+  CreateAt: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
-const Blog = mongoose.model<BlogModel>('Blog', blogSchema);
+const Blog = mongoose.model<BlogModel>("Blog", blogSchema);
 export default Blog;

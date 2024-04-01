@@ -1,5 +1,6 @@
 import express from 'express';
 import { addLike, unlike, upload } from '../controllers/blogController';
+import createBlogValidation from '../validations/blogValidation';
 const blogController = require('./../controllers/blogController');
 const authController = require('./../controllers/authController');
 
@@ -9,7 +10,7 @@ router.post(
   '/',
   authController.protect,
   authController.restrictTo('admin'),
-  upload.single('image'),
+  upload.single('image'),createBlogValidation,
   blogController.CreateBlog,
 );
 router.route('/').get(blogController.GetAllBlogs);
