@@ -16,7 +16,7 @@ const createBlogValidation = async (
       abortEarly: false,
     });
     if (value.error) {
-      return res.status(403).send({ message: "Invalid message details" });
+      return res.status(403).send({ message: "Invalid blog details" });
     } else {
       next();
     }

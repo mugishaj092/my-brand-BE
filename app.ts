@@ -7,13 +7,43 @@ import { addComment, getComments } from "./src/controllers/commentController";
 const authController = require("./src/controllers/authController");
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 
 import Document from "./swagger.json";
 import validateComments from "./src/validations/commentValidation";
 const customCss = fs.readFileSync(process.cwd() + "/swagger.css", "utf8");
 
 const app = express();
+dotenv.config({ path: './.env.test' })
 
+export interface EnvConfig {
+    PORT: string | number
+    DATABASE: string
+    DATABASE_PASSWORD: string
+}
+
+const { PORT, DATABASE } =
+    process.env as unknown as EnvConfig
+const DB = DATABASE
+
+mongoose
+    .connect(DB, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('DB connection established')
+    })
+    .catch((err) => {
+        console.error('DB connection failed:', err)
+    })
+
+app.listen(PORT, () => {
+    console.log(`App running on port ${PORT}...`)
+})
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(Document, { customCss }));

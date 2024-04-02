@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "mocha './specs/**/*.spec.ts'",
-    "coverage": "nyc --reporter=lcov --reporter=text npm run test",
-    "dev": "nodemon server.ts",
+    "test": "ts-mocha './src/**/*.spec.ts'",
+    "coverage": "nyc --reporter=text && yarn test",
+    "dev": "nodemon app.ts",
     "start": "ts-node index.ts",
     "start: prod": "NODE_ENV=production nodemon server. js"
   },
@@ -58,6 +58,7 @@
     "@types/multer": "^1.4.11",
     "@types/node": "^20.11.28",
     "@types/nodemailer": "^6.4.14",
+    "@types/supertest": "^6.0.2",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/validator": "^13.11.9",
@@ -70,6 +71,7 @@
     "nock": "^12.0.2",
     "nyc": "^15.0.0",
     "prettier": "^3.2.5",
-    "sinon": "^9.0.0"
+    "sinon": "^9.0.0",
+    "ts-mocha": "^10.0.0"
   }
 }
