@@ -25,12 +25,12 @@ jobs:
           command: |
             node -v
             npm -v
-            mongo localhost --eval "db.version()"
+            mongo --eval "db.version()"
       - run:
           name: Install packages
           command: |
             npm install
       - run:
-          name: test
+          name: Test
           command: |
             yarn run dev
