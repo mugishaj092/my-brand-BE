@@ -1,26 +1,32 @@
-name: Node.js CI
-
+[5:27 PM] Lydia Ingabire (Unverified)
+name: Continuous Integration
+ 
 on:
-  pull_request:
-
+  push:
+    branches:
+      - main
+ 
 jobs:
-  tests:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+  test:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
+ 
       - name: Install dependencies
-        run: npm ci
-
-      - name: circle ci test
+        run: yarn add
+ 
+      - name: Run tests
+        run: yarn run test
+ 
+  test-on-macos:
+    runs-on: window-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+ 
+      - name: Install dependencies
+        run: yarn add
+ 
+      - name: Run tests on macOS
         run: yarn run test
