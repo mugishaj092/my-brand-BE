@@ -9,7 +9,7 @@ import app from '../../app';
 describe('Auth endpoints', () => {
   before(async () => {
     try {
-      await mongoose.connect('mongodb://127.0.0.1:27017/Todo-dbs', {
+      await mongoose.connect('mongodb+srv://mugishajoseph092:qpEJUA0F4YTqELut@my-brand.ixhj4md.mongodb.net/my-brand-BE', {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });

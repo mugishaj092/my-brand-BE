@@ -15,7 +15,7 @@ import validateComments from "./src/validations/commentValidation";
 const customCss = fs.readFileSync(process.cwd() + "/swagger.css", "utf8");
 
 const app = express();
-dotenv.config({ path: './config.env' })
+dotenv.config({ path: './.env.test' })
 
 export interface EnvConfig {
     PORT: string | number
