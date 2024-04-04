@@ -31,6 +31,7 @@ describe('Auth endpoints', () => {
       confirmPassword: 'password123',
       role: 'user',
     });
+    // console.log(response)
     expect(response).to.have.status(201);
     expect(response.body).to.have.property('token');
     expect(response.body).to.have.property('data');
