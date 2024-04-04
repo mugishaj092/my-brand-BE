@@ -10,7 +10,8 @@ router.post(
   '/',
   authController.protect,
   authController.restrictTo('admin'),
-  upload.single('image'),createBlogValidation,
+  upload.single('image'),
+  createBlogValidation,
   blogController.CreateBlog,
 );
 router.route('/').get(blogController.GetAllBlogs);
