@@ -3,17 +3,17 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import { expect } from 'chai';
 chai.use(chaiHttp);
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import app from '../../app';
 import Blog from '../models/blogsModal';
 // import path from 'path';
 describe('Blog Endpoints', () => {
   before(async () => {
     try {
-      await mongoose.connect('mongodb://127.0.0.1:27017/Todo-dbs', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      // await mongoose.connect('mongodb://127.0.0.1:27017/Todo-dbs', {
+      //   useNewUrlParser: true,
+      //   useUnifiedTopology: true,
+      // });
       console.log('Connected to MongoDB');
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
