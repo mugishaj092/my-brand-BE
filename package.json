@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
+    "build":"tsc",
     "test": "ts-mocha './src/**/*.spec.ts'",
     "coverage": "nyc --reporter=text && yarn test",
     "dev": "nodemon app.ts",
