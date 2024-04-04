@@ -9,7 +9,7 @@ import app from '../../app';
 describe('Auth endpoints', () => {
   before(async () => {
     try {
-      await mongoose.connect('mongodb://127.0.0.1:27017/Backend', {
+      await mongoose.connect('mongodb://127.0.0.1:27017/My-brand-BE', {
         useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: false,
