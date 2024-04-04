@@ -10,12 +10,7 @@ describe('Auth endpoints', () => {
   before(async () => {
     try {
       //connection
-      await mongoose.connect('mongodb+srv://mugishajoseph092:qpEJUA0F4YTqELut@my-brand.ixhj4md.mongodb.net/my-brand-BE', {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true,
-      });
+      await mongoose.connect('mongodb+srv://mugishajoseph092:qpEJUA0F4YTqELut@my-brand.ixhj4md.mongodb.net/my-brand-BE')
       console.log('Connected to MongoDB');
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
