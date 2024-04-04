@@ -4,13 +4,13 @@ import chaiHttp from 'chai-http';
 import { expect } from 'chai';
 chai.use(chaiHttp);
 import User from '../models/userModel';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import app from '../../app';
 describe('Auth endpoints', () => {
   before(async () => {
     try {
       //connection
-      await mongoose.connect('mongodb://127.0.0.1:27017/My-brand-BE')
+      // await mongoose.connect('mongodb://127.0.0.1:27017/My-brand-BE')
       console.log('Connected to MongoDB');
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
