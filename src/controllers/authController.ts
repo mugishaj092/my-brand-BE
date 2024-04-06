@@ -157,7 +157,20 @@ exports.forgetPassword = async (
     await sendEmail({
       email: user.email,
       subject: 'Password Reset',
-      message: `Please click on the following link to reset your password: ${resetURL}`,
+      message: `<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+      <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+          <h1 style="color: #333333;">Password Reset for Your <span style="font-weight: 700;"></span> Account</h1>
+          <p style="color: #555555;">Dear ${user.email},</p>
+          <p style="color: #555555;">I hope this email finds you well. It has come to our attention that you may be experiencing difficulty accessing your My brand Platform account. If you have forgotten your password or are having trouble logging in, we're here to help!</p>
+          <p style="color: #555555;">To reset your password and regain access to your account, please follow the link below:</p>
+          <p><a href="${resetURL}" style="color: #007bff; text-decoration: none;">Password Reset Link</a></p>
+          <p style="color: #555555;">If you continue to experience issues or have any concerns, feel free to reach out to our support team at <a href="mailto:mugishajoseph092@gmail.com" style="color: #007bff; text-decoration: none;">mugishajoseph092@gmail.com</a>.</p>
+          <p style="color: #555555;">Thank you for using My brand. We appreciate your prompt attention to this matter.</p>
+          <p>Best regards,<br>Support Team</p>
+          <p>mybrand@gmail.com</p>
+      </div>
+  </body>
+  `,
     });
 
     res.status(200).json({
