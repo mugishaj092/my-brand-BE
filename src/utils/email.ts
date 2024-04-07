@@ -17,6 +17,7 @@ const sendEmail = async (options: EmailOptions): Promise<void> => {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
+    
 
     const mailOptions = {
       from: 'My brand <mugishajoseph20021@gmail.com>',
