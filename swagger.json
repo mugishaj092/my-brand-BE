@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8081",
+      "url": "https://my-brand-be-1-p2x5.onrender.com",
       "description": "Local Development Server for Swagger"
     }
   ],
