@@ -18,7 +18,6 @@ const sendEmail = async (options: EmailOptions): Promise<void> => {
       },
     });
     
-
     const mailOptions = {
       from: 'My brand <mugishajoseph20021@gmail.com>',
       to: options.email,
