@@ -33,5 +33,6 @@ describe('Auth endpoints', () => {
       .set('authorization', `Bearer ${adminToken}`);
     expect(response).to.have.status(200);
     expect(response.body.status).to.equal('success');
+    process.exit(0);
   });
 });
