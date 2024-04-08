@@ -10,7 +10,6 @@ export const addComment = async (
   try {
     const id = req.params.id;
     const blog = await BlogModel.findOne({ _id: id });
-    console.log(blog);
 
     const commentData: IComment = new CommentModel({
       name: req.user.name,
@@ -18,6 +17,7 @@ export const addComment = async (
       comment: req.body.comment,
       blog_id: blog?.id,
     });
+console.log(req.body);
 
     if (blog) {
       await commentData.save();

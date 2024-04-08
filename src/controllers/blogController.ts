@@ -114,6 +114,37 @@ export const GetAllBlogs = async (
   }
 };
 
+export const GetSingleBlog = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const blogId = req.params.id; 
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      res.status(404).json({
+        status: 'fail',
+        message: 'Blog not found',
+      });
+      return;
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        Blog: blog,
+      },
+    });
+  } catch (err:any) {
+    res.status(500).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
+};
+
+
 export const addLike = (req: Request, res: Response): void => {
   const id: string = req.params.id;
 

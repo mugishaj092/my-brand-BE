@@ -15,6 +15,7 @@ router.post(
   blogController.CreateBlog,
 );
 router.route('/').get(blogController.GetAllBlogs);
+router.route('/:id').get(blogController.GetSingleBlog);
 router.patch(
   '/:id',
   authController.protect,

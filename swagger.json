@@ -284,7 +284,7 @@
                   "name": { "type": "string" },
                   "password": { "type": "string" },
                   "confirmPassword": { "type": "string" },
-                  "email": { "type": "string" }
+                  "email": { "type": "string", "format": "email" }
                 }
               }
             }
