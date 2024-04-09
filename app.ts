@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import userRouter from "./src/routes/useRouter";
 import BlogRouter from "./src/routes/blogsRoute";
@@ -9,6 +9,8 @@ import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import Document from "./swagger.json";
 import validateComments from "./src/validations/commentValidation";
@@ -44,8 +46,15 @@ mongoose
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}...`)
 })
+
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors())
+app.use((req:Request, res:Response,next:NextFunction) => {
+    console.log(req.cookies);
+    next()
+})
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(Document, { customCss }));
 app.use("/api/users", userRouter);
 app.use("/api/blog", BlogRouter);

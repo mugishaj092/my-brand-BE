@@ -61,6 +61,20 @@ exports.login = async (req: Request, res: Response, next: NextFunction) => {
   const token = jwt.sign({ id: Login_User._id }, process.env.JWT_SECRET || '', {
     expiresIn: process.env.JWT_EXPIRESIN,
   });
+
+  const jwtCookieExpiresIn = process.env.JWT_COOKIE_EXPIRESIN ? parseInt(process.env.JWT_COOKIE_EXPIRESIN, 10) : undefined;
+  if (jwtCookieExpiresIn !== undefined) {
+    const tokenExpiration = new Date(Date.now() + jwtCookieExpiresIn * 24 * 60 * 60 * 1000);
+    
+    res.cookie('jwt', token, {
+      expires: tokenExpiration,
+      httpOnly: true, 
+      secure: req.secure || (req.headers['x-forwarded-proto'] === 'https')
+    });
+  } else {
+    console.error('JWT_COOKIE_EXPIRESIN is not defined.');
+  }
+
   res.status(200).json({
     status: 'success',
     token: token,
