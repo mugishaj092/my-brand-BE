@@ -49,7 +49,12 @@ export const getComments = async (
     const comments: IComment[] = await CommentModel.find({
       blog_id: id,
     });
-    res.json(comments);
+    res.status(200).json({
+      status:"success",
+      data:{
+        comments: comments
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: "Server Error" });

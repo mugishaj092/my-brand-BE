@@ -29,7 +29,7 @@ exports.signUp = async (req: Request, res: Response): Promise<void> => {
         User: newUser,
       },
     });
-  } catch (err:any) {
+  } catch (err: any) {
     res.status(500).json({
       status: 'error',
       message: err.message,
@@ -48,7 +48,6 @@ exports.login = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   const Login_User = await User.findOne({ email }).select('+password');
-
   if (
     !Login_User ||
     !(await Login_User.correctPassword(password, Login_User.password))
@@ -58,18 +57,23 @@ exports.login = async (req: Request, res: Response, next: NextFunction) => {
       message: 'Incorrect password or email',
     });
   }
-  const token = jwt.sign({ id: Login_User._id }, process.env.JWT_SECRET || '', {
+  const token = jwt.sign({ id: Login_User }, process.env.JWT_SECRET || '', {
     expiresIn: process.env.JWT_EXPIRESIN,
   });
 
-  const jwtCookieExpiresIn = process.env.JWT_COOKIE_EXPIRESIN ? parseInt(process.env.JWT_COOKIE_EXPIRESIN, 10) : undefined;
+  const jwtCookieExpiresIn = process.env.JWT_COOKIE_EXPIRESIN
+    ? parseInt(process.env.JWT_COOKIE_EXPIRESIN, 10)
+    : undefined;
   if (jwtCookieExpiresIn !== undefined) {
-    const tokenExpiration = new Date(Date.now() + jwtCookieExpiresIn * 24 * 60 * 60 * 1000);
-    
+    const tokenExpiration = new Date(
+      Date.now() + jwtCookieExpiresIn * 24 * 60 * 60 * 1000,
+    );
+    console.log(tokenExpiration);
     res.cookie('jwt', token, {
       expires: tokenExpiration,
-      httpOnly: true, 
-      secure: req.secure || (req.headers['x-forwarded-proto'] === 'https')
+      httpOnly: true,
+      secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+      sameSite: 'strict',
     });
   } else {
     console.error('JWT_COOKIE_EXPIRESIN is not defined.');
@@ -92,12 +96,16 @@ export const protect = async (
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
+
   if (!token) {
     return res.status(401).json({
       status: 'fail',
       message: 'You are not logined in. Please login',
     });
+    console.log(res);
   }
   try {
     const decoded: any = await promisify<string, string>(jwt.verify)(
@@ -123,7 +131,9 @@ export const protect = async (
   }
 };
 
-export const currentUser=(req: AuthenticatedRequest, res: Response)=>{return req.user}
+export const currentUser = (req: AuthenticatedRequest, res: Response) => {
+  return req.user;
+};
 
 exports.restrictTo = (roles: string) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
