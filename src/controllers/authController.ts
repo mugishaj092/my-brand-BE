@@ -37,7 +37,11 @@ exports.signUp = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-exports.login = async (req: Request, res: Response, next: NextFunction) => {
+exports.login = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
   const { email, password }: any = req.body;
 
   if (!email || !password) {
@@ -79,9 +83,15 @@ exports.login = async (req: Request, res: Response, next: NextFunction) => {
     console.error('JWT_COOKIE_EXPIRESIN is not defined.');
   }
 
+  const decoded: any = await promisify<string, string>(jwt.verify)(
+    token,
+    process.env.JWT_SECRET || '',
+  );
+  const user = await User.findById(decoded.id);
   res.status(200).json({
     status: 'success',
     token: token,
+    user,
   });
 };
 
