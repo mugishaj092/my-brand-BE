@@ -29,7 +29,9 @@ console.log(req.body);
       res.status(404).json({ message: "Blog not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error",
+      error
+     });
   }
 };
 
